@@ -11,7 +11,7 @@ int main(){
     }
     insertionSort(fila, 0);
 
-    printf("Log CPU: \n");
+    printf("\nLog CPU: \n");
     escalonador(fila);
 
     destroiFila(&fila);

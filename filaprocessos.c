@@ -15,7 +15,7 @@ struct filaProcessos {
     int tam;
 };
 
-Processo filaRemove(FilaProcessos *fila, int pos);
+void filaRemove(FilaProcessos *fila, int pos);
 
 FilaProcessos* criaFila(int n) {
     FilaProcessos *fila = (FilaProcessos* ) malloc(sizeof(FilaProcessos));
@@ -41,16 +41,11 @@ void destroiFila(FilaProcessos** fila) {
     *fila = NULL;
 }
 
-Processo filaRemove(FilaProcessos* fila, int pos) {
-    Processo p = fila->processos[pos];
-    for(int i = 1; i <fila->tam ; i++){
-        
-    
+void filaRemove(FilaProcessos* fila, int pos) {
+    for (int i = 1; i <fila->tam ; i++)
         fila->processos[i - 1] = fila->processos[i];
-
-    }
+ 
     fila->tam--;
-    return p;
 }
 
 void escalonador(FilaProcessos* fila) {
@@ -64,7 +59,7 @@ void escalonador(FilaProcessos* fila) {
             chave.ciclos--;
             ciclos++;
             if(chave.ciclos <= 0){
-                Processo p = filaRemove(fila, 0);
+                filaRemove(fila, 0);
                 break;
             }
         }
