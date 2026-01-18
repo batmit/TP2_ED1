@@ -9,7 +9,6 @@ int main(){
     for(int i = 0; i < n; i++){
         adicionaFila(fila, i);
     }
-    insertionSort(fila, 0);
 
     printf("\nLog CPU: \n");
     escalonador(fila);

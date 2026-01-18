@@ -14,5 +14,6 @@ void imprimeLog(Processo p);
 
 void insertionSort(FilaProcessos* fila, int very);
 void moveAll(FilaProcessos *fila, int n, int j);
+void mergeSort(FilaProcessos *fila, int n);
 
 #endif

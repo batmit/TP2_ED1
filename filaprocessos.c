@@ -42,38 +42,43 @@ void destroiFila(FilaProcessos** fila) {
 }
 
 void filaRemove(FilaProcessos* fila, int pos) {
-    for (int i = 1; i <fila->tam ; i++)
-        fila->processos[i - 1] = fila->processos[i];
+    for (int i = pos; i <fila->tam - 1 ; i++)
+        fila->processos[i] = fila->processos[i + 1];
  
     fila->tam--;
 }
 
 void escalonador(FilaProcessos* fila) {
-    int pos = 0;
     int ciclos = 0;
-    Processo chave;  
+    Processo chave;
+
+    mergeSort(fila, fila->tam);
+    //insertionSort(fila, 0);
+
     while(fila->tam > 0){
-        chave = fila->processos[pos];
-        for(int i = 0; i < 100; i++){
-            fila->processos[pos].ciclos--;
+        chave = fila->processos[0];
+
+        // executa 100 ciclos ou até os ciclos do processo acabarem
+        while (ciclos < 100 && chave.ciclos > 0) {
             chave.ciclos--;
             ciclos++;
-            if(chave.ciclos <= 0){
-                filaRemove(fila, 0);
-                break;
-            }
         }
-        if(chave.ciclos > 0){
-            fila->processos[pos].prioridade++;
+        
+        filaRemove(fila, 0);
+
+        Processo temp = chave;
+        temp.ciclos = ciclos;
+        imprimeLog(temp);
+
+        if (chave.ciclos > 0) {
+            chave.prioridade++;
+            fila->processos[fila->tam] = chave;
+            fila->tam++;
             insertionSort(fila, 1);
         }
-        chave.ciclos = ciclos;
-        imprimeLog(chave);
 
         ciclos = 0;
-
     }
-
 }
 
 void imprimeLog(Processo p) {
@@ -117,33 +122,64 @@ void insertionSort(FilaProcessos* fila, int very){
                     fila->processos[j] = salvo;
                     break;
                 }
-
-
-
             }
-
         }
-     
-
-
     }
+}
 
+void mergerec(Processo* fila, int l, int r);
+void merge(Processo* fila, int l, int m, int r);
+
+// So chama o merge recursivo
+void mergeSort(FilaProcessos *fila, int n) {
+    mergerec(fila->processos, 0, n - 1);
+}
+
+void mergerec(Processo* fila, int l, int r) {
+    if (l < r) {
+        // acha o meio do vetor e o divide em dois sub vetores menores
+        int m = (l + r) / 2; 
+        mergerec(fila, l, m);
+        mergerec(fila, m + 1, r);
+        merge(fila, l, m, r);
+    }
+}
+
+void merge(Processo* fila, int l, int m, int r) {
+    int tamL = m - l + 1; // tamanho do vetor da esquerda
+    int tamR = r - m; // tamanho do vetor da direita
+    Processo *fl = (Processo* ) malloc(sizeof(Processo) * tamL);
+    Processo *fr = (Processo* ) malloc(sizeof(Processo) * tamR);
+    
+    for (int i = 0; i < tamL; i++)
+        fl[i] = fila[l + i];
+    for (int j = 0; j < tamR; j++)
+        fr[j] = fila[m + 1 + j];
+
+    int k = l;
+    int i = 0;
+    int j = 0;
+   
+    // enquanto tem elementos em um dos vetores
+    while (i < tamL && j < tamR) {
+        if (fl[i].prioridade < fr[j].prioridade || (fl[i].prioridade == fr[j].prioridade && fl[i].tempoChegada < fr[j].tempoChegada)) 
+            fila[k++] = fl[i++];
+        else 
+            fila[k++] = fr[j++];
+    }
+    
+    // se algum vetor acabou primeiro, só copia o resto
+    while (i < tamL)
+        fila[k++] = fl[i++];
+    while (j < tamR)
+        fila[k++] = fr[j++];
+
+    free(fl);
+    free(fr);
 }
 
 //Nessa função eu movimento todos os valores do n até o j em 
 void moveAll(FilaProcessos *fila, int n, int j){
-
-    for(int i = n; i >j; i--){
-        
-    
-        fila->processos[i] = fila->processos[i - 1];
-
-    }
-
-
+    for(int i = n; i >j; i--)
+        fila->processos[i] = fila->processos[i - 1]; 
 }
-// 0 12 13 3 6
-// 0 3 4 12 6
-// 0 3 4 12 6
-// j = 0
-// i = 1
