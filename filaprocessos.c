@@ -44,7 +44,7 @@ void destroiFila(FilaProcessos** fila) {
 void filaRemove(FilaProcessos* fila, int pos) {
     for (int i = pos; i <fila->tam - 1 ; i++)
         fila->processos[i] = fila->processos[i + 1];
- 
+
     fila->tam--;
 }
 
@@ -63,7 +63,7 @@ void escalonador(FilaProcessos* fila) {
             chave.ciclos--;
             ciclos++;
         }
-        
+
         filaRemove(fila, 0);
 
         Processo temp = chave;
@@ -92,7 +92,7 @@ void adicionaFila(FilaProcessos* fila, int i){
         scanf("%f", &process.tempoChegada);
         scanf("%d %d", &process.prioridade, &process.ciclos);
 
-        fila->processos[i] = process; 
+        fila->processos[i] = process;
     }
 }
 
@@ -138,7 +138,7 @@ void mergeSort(FilaProcessos *fila, int n) {
 void mergerec(Processo* fila, int l, int r) {
     if (l < r) {
         // acha o meio do vetor e o divide em dois sub vetores menores
-        int m = (l + r) / 2; 
+        int m = (l + r) / 2;
         mergerec(fila, l, m);
         mergerec(fila, m + 1, r);
         merge(fila, l, m, r);
@@ -150,7 +150,7 @@ void merge(Processo* fila, int l, int m, int r) {
     int tamR = r - m; // tamanho do vetor da direita
     Processo *fl = (Processo* ) malloc(sizeof(Processo) * tamL);
     Processo *fr = (Processo* ) malloc(sizeof(Processo) * tamR);
-    
+
     for (int i = 0; i < tamL; i++)
         fl[i] = fila[l + i];
     for (int j = 0; j < tamR; j++)
@@ -159,15 +159,15 @@ void merge(Processo* fila, int l, int m, int r) {
     int k = l;
     int i = 0;
     int j = 0;
-   
+
     // enquanto tem elementos em um dos vetores
     while (i < tamL && j < tamR) {
-        if (fl[i].prioridade < fr[j].prioridade || (fl[i].prioridade == fr[j].prioridade && fl[i].tempoChegada < fr[j].tempoChegada)) 
+        if (fl[i].prioridade < fr[j].prioridade || (fl[i].prioridade == fr[j].prioridade && fl[i].tempoChegada < fr[j].tempoChegada))
             fila[k++] = fl[i++];
-        else 
+        else
             fila[k++] = fr[j++];
     }
-    
+
     // se algum vetor acabou primeiro, só copia o resto
     while (i < tamL)
         fila[k++] = fl[i++];
@@ -178,8 +178,8 @@ void merge(Processo* fila, int l, int m, int r) {
     free(fr);
 }
 
-//Nessa função eu movimento todos os valores do n até o j em 
+//Nessa função eu movimento todos os valores do n até o j em
 void moveAll(FilaProcessos *fila, int n, int j){
     for(int i = n; i >j; i--)
-        fila->processos[i] = fila->processos[i - 1]; 
+        fila->processos[i] = fila->processos[i - 1];
 }
