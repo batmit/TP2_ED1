@@ -12,7 +12,7 @@ void destroiFila(FilaProcessos** fila);
 void escalonador(FilaProcessos* fila);
 void imprimeLog(Processo p);
 
-void insertionSort(FilaProcessos* fila, int very);
+void insertionSort(FilaProcessos* fila);
 void moveAll(FilaProcessos *fila, int n, int j);
 void mergeSort(FilaProcessos *fila, int n);
 

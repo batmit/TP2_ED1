@@ -79,7 +79,7 @@ void escalonador(FilaProcessos* fila) {
             chave.prioridade++;
             fila->processos[fila->tam] = chave;
             fila->tam++;
-            insertionSort(fila, 1);
+            insertionSort(fila);
         }
 
         ciclos = 0;
@@ -104,7 +104,7 @@ void adicionaFila(FilaProcessos* fila, int i){
 
 //Função que realiza o insertionSort.
 //Irá analisar o tempoChegada apenas se very == 0. Apenas colocaremos o very = 0 na primeira ordenação
-void insertionSort(FilaProcessos* fila, int very){
+void insertionSort(FilaProcessos* fila){
 
     for (int i = 1; i < fila->tam; i++) {
         //Vou salvar em chave o Processo que será verificado
@@ -112,14 +112,7 @@ void insertionSort(FilaProcessos* fila, int very){
         //Esse for é o do insertionSort normal, vou de 0 até o índice da posição sendo analisada
         for (int j = 0; j < i; j++) {
             //Se a prioridade da chave analisada for menor que a da posição j
-            if (chave.prioridade <= fila->processos[j].prioridade) {
-                if (very == 0 && chave.tempoChegada < fila->processos[j].tempoChegada) {
-                    // Se o tempo de chegada for menor eu faço o insertion igual acima
-                    Processo salvo = chave;
-                    moveAll(fila, i, j);
-                    fila->processos[j] = salvo;
-                    break;
-                } else if (chave.prioridade < fila->processos[j].prioridade) {
+            if (chave.prioridade < fila->processos[j].prioridade) {
                     // salvo a chave
                     Processo salvo = chave;
                     //Chamo a função que move todos os elementos, da forma que o insertionSort comanda
@@ -127,7 +120,7 @@ void insertionSort(FilaProcessos* fila, int very){
                     //Coloco o item salvo na posição correta
                     fila->processos[j] = salvo;
                     break;
-                }
+                
             }
         }
     }
